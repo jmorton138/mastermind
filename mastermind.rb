@@ -100,20 +100,24 @@ end
 
 def run_game(code, game_type)
     loss = true
+    counter = 0
     12.times do
         if game_type.type == 1
+            counter += 1
             #computer's guess, first time random
             # puts "before"
             # puts guess
             guess = ComputerCode.new.generate_code
         elsif game_type.type == 2  
+            
             #prints clues and prompts user for guess
-            puts "Make a guess."
+            puts "Make a guess. You have #{12 - counter} left."
+            counter += 1
             guess = gets.chomp.split('').map {|item| item.to_i}
             code_length_error(guess)
         end
         
-        if !compare_code(code.code, guess, game_type)
+        if !compare_code(code.code, guess, game_type, counter)
             loss = false
             break 
         end
@@ -131,16 +135,16 @@ def run_game(code, game_type)
 
 end
 
-def compare_code(code, guess, game_type)
+def compare_code(code, guess, game_type, counter)
 
     if code == guess
         #Computer wins
         if game_type.type == 1
-            p "Computer won"
+            puts "Computer won!".bold
             ComputerCode.guess_setter=([])
         # User wins
         elsif game_type.type == 2   
-            p "You won"
+            puts "You won"
         end
         return false
     else
@@ -185,19 +189,26 @@ def compare_code(code, guess, game_type)
   
         # p wrong_indexes
         #p clues
-        clues.each do |clue|
-            if clue == "0" 
-                print Rainbow("•").color(:green).bright + " "
-            elsif clue == "X"
-                print Rainbow("•").color(:yellow).bright + " "
+        if game_type.type == 1
+            print "\n"
+            print "Computer's guess ##{counter}\n".underline
+            guess.each { |item| print item } 
+            print "\n"
+        elsif game_type.type == 2
+            print "Clues: ".underline
+            clues.each do |clue|
+                if clue == "0" 
+                    print Rainbow("•").color(:green).bright + " "
+                elsif clue == "X"
+                    print Rainbow("•").color(:yellow).bright + " "
+                end
+                # if clue == clues[clues.length]
+                #     puts "/n"
+                # end
             end
-            # if clue == clues[clues.length]
-            #     puts "/n"
-            # end
+            puts ""
         end
-        puts ""
-        puts code
-        clues
+            clues
     end
 end
 
@@ -223,7 +234,8 @@ def how_to_play
     puts "Clues".underline
     puts ""
     puts "With each guess you'll get clues about the code. Every #{Rainbow("•").color(:green).bright} means you have 1 correct number/color in the correct place. Every #{Rainbow("•").color(:yellow).bright} means you have 1 correct number/color, but in the incorrect place."
-    
+    puts ""
+    puts "Alright, let's begin!"
 end
 
 
