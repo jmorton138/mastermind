@@ -105,18 +105,14 @@ def run_game(code, game_type)
         if game_type.type == 1
             counter += 1
             #computer's guess, first time random
-            # puts "before"
-            # puts guess
             guess = ComputerCode.new.generate_code
         elsif game_type.type == 2  
-            
             #prints clues and prompts user for guess
             puts "Make a guess. You have #{12 - counter} left."
             counter += 1
             guess = gets.chomp.split('').map {|item| item.to_i}
             code_length_error(guess)
         end
-        
         if !compare_code(code.code, guess, game_type, counter)
             loss = false
             break 
@@ -174,7 +170,6 @@ def compare_code(code, guess, game_type, counter)
                 if comp_clues.include?(j_num)
                     # check item isn't a duplicate before pushing to array
                     if index_j != comp_clues.index(j_num) && comp_clues.count(j_num) < code.count(j_num)
-                        # binding.pry
                         clues.push("X")
                         almost_correct.push(j_num) 
                     end
@@ -187,8 +182,6 @@ def compare_code(code, guess, game_type, counter)
         correct_guesses = ComputerCode.guess_setter=(comp_clues)
         wrong_indexes = ComputerCode.wrong_positions=(almost_correct)
   
-        # p wrong_indexes
-        #p clues
         if game_type.type == 1
             print "\n"
             print "Computer's guess ##{counter}\n".underline
@@ -202,9 +195,6 @@ def compare_code(code, guess, game_type, counter)
                 elsif clue == "X"
                     print Rainbow("•").color(:yellow).bright + " "
                 end
-                # if clue == clues[clues.length]
-                #     puts "/n"
-                # end
             end
             puts ""
         end
@@ -227,7 +217,7 @@ def play_again
 end
 
 def how_to_play
-    puts "How To Play Mastermind".underline #underline
+    puts "How To Play Mastermind".underline
     puts ""
     puts "Mastermind is a codebreaking game. You can either be the code maker or the code breaker. If you're the code maker, you choose a sequence of four numbers/colors that the computer will try to crack. If you're the code breaker, the computer will create a number/color sequence for you to crack."
     puts ""
