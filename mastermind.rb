@@ -184,9 +184,20 @@ def compare_code(code, guess, game_type)
         wrong_indexes = ComputerCode.wrong_positions=(almost_correct)
   
         # p wrong_indexes
-        # p code
-        p clues[0..2]
- 
+        #p clues
+        clues.each do |clue|
+            if clue == "0" 
+                print Rainbow("•").color(:green).bright + " "
+            elsif clue == "X"
+                print Rainbow("•").color(:yellow).bright + " "
+            end
+            # if clue == clues[clues.length]
+            #     puts "/n"
+            # end
+        end
+        puts ""
+        puts code
+        clues
     end
 end
 
@@ -205,7 +216,14 @@ def play_again
 end
 
 def how_to_play
-    puts "Instructions"
+    puts "How To Play Mastermind".underline #underline
+    puts ""
+    puts "Mastermind is a codebreaking game. You can either be the code maker or the code breaker. If you're the code maker, you choose a sequence of four numbers/colors that the computer will try to crack. If you're the code breaker, the computer will create a number/color sequence for you to crack."
+    puts ""
+    puts "Clues".underline
+    puts ""
+    puts "With each guess you'll get clues about the code. Every #{Rainbow("•").color(:green).bright} means you have 1 correct number/color in the correct place. Every #{Rainbow("•").color(:yellow).bright} means you have 1 correct number/color, but in the incorrect place."
+    
 end
 
 
@@ -216,9 +234,10 @@ def code_length_error(code)
     end
 end
 
+puts Rainbow("•").color(:red)
+
 how_to_play
 start_game
-#Ask to play another game
 
 
 
